@@ -14,12 +14,14 @@ r = new rive.Rive({
     r.resizeDrawingSurfaceToCanvas();
     window.riveInputs = r.stateMachineInputs("State Machine 1");
 
-    // Push values into Rive
-    console.log(data[0].value);
-
-    const namedVM = file.viewModelByName("textBoxes");
-    // const namedVM = file.viewModelByIndex(0);
-    console.log(namedVM);
+    // Push text data to Rive text boxes
+    data.forEach((item, index) => {
+      const propName = `textBox${index + 1}`;
+      const prop = r.viewModelInstance.string(propName);
+      if (prop) {
+        prop.value = item.value;
+      }
+    });
   },
 });
 
@@ -61,9 +63,4 @@ r.on(rive.EventType.RiveEvent, onRiveEventReceived);
 
 window.addEventListener("resize", () => {
   r.resizeDrawingSurfaceToCanvas();
-});
-
-// Activate reseting state and reset all values
-document.getElementById("resetMapBtn").addEventListener("click", () => {
-  story.value = 0;
 });
